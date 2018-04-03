@@ -7,6 +7,7 @@ import re
 reg_charset = r'''[\u4E00-\u9FA5]'''
 reg_pattern = re.compile(reg_charset)
 
+
 def is_chinese_comment(line):
     matched_entries = reg_pattern.findall(line)
     match_count = len(matched_entries)
@@ -24,12 +25,13 @@ class ReplaceContent(object):
     def get_content(self):
         return self.__content
 
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("usage: python3 " + sys.argv[0] + " filePath")
         exit(-1)
     target_file = sys.argv[1]
-    print("准备处理文件", target_file)
+    print("准备处理文件:", target_file)
     delete_lines = []
     comm_start = False
     comm_end = False
@@ -63,14 +65,9 @@ if __name__ == '__main__':
                     if len(str.strip(new_line)) > 0:
                         replace_list.append(ReplaceContent(line_number, new_line))
 
-
-
             line = str.strip(line_all)
-
             if line.startswith("//") and is_chinese_comment(line):
                 delete_lines.append(line_number)
-            # elif line == "//":
-            #     delete_lines.append(line_number)
             elif line.startswith("/*"):
                 if line.endswith("*/") and is_chinese_comment(line):
                     block_to_delete = True
@@ -110,7 +107,6 @@ if __name__ == '__main__':
             for replace in replace_list:
                 if replace.get_line() == line_number:
                     new_file.write(replace.get_content())
-                    # print("replace", replace.get_content())
                     replace_line = True
                     break
 
@@ -118,6 +114,5 @@ if __name__ == '__main__':
                 new_file.write(line_all)
 
     new_file.close()
-
     os.remove(target_file)
     os.rename(target_file + ".nolog", target_file)
