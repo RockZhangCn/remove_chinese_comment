@@ -1,0 +1,12 @@
+## Usage:
+
+Simple Use:
+python3 remove_chinese_comment.py TestCode.java
+
+
+Complicate Use:
+
+find dir -name "*.java" > fileList.txt
+./remove_chinese_comment.sh fileList.txt
+
+
